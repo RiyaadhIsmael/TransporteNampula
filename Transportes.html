@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h2>Bem-vindo</h2>
+        <button onclick="showRegister()">Registrar</button>
+        <button onclick="showLogin()">Log in</button>
+    </div>
+
+    <div class="container hidden" id="registerScreen">
+        <h2>Registrar</h2>
+        <input type="text" id="registerName" placeholder="Nome" required>
+        <input type="text" id="registerPhone" placeholder="Número de Telefone" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password" required>
+        <button onclick="register()">Registrar</button>
+        <button onclick="backToStart()">Voltar</button>
+    </div>
+
+    <div class="container hidden" id="loginScreen">
+        <h2>Log In</h2>
+        <input type="text" id="loginPhone" placeholder="Número de Telefone" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Log In</button>
+        <button onclick="backToStart()">Voltar</button>
+    </div>
+
+    <div class="container hidden" id="dashboard">
+        <h2>Bem-vindo, <span id="userName"></span></h2>
+        <p>Número de Telefone: <span id="userPhone"></span></p>
+        <p>Email: <span id="userEmail"></span></p>
+        <button onclick="logout()">Log Out</button>
+    </div>
+
+    <script>
+        function showRegister() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('registerScreen').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function backToStart() {
+            document.getElementById('registerScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const phone = document.getElementById('registerPhone').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (name && phone && email && password) {
+                localStorage.setItem('user', JSON.stringify({ name, phone, email, password }));
+                alert('Cadastro bem-sucedido! Faça login agora.');
+                backToStart();
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+
+        function login() {
+            const phone = document.getElementById('loginPhone').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (user && user.phone === phone && user.password === password) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('userName').innerText = user.name;
+                document.getElementById('userPhone').innerText = user.phone;
+                document.getElementById('userEmail').innerText = user.email;
+            } else {
+                alert('Número de telefone ou senha incorretos.');
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
