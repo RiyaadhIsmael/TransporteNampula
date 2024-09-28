@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Registration</title>
+    <title>Login e Registro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,48 +11,72 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #f7f7f7;
             margin: 0;
         }
         .container {
             background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             width: 300px;
             text-align: center;
         }
         .hidden {
             display: none;
         }
-        input {
+        input, select {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         button {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin: 10px 0;
             cursor: pointer;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
         }
     </style>
     <script>
+        let userData = {};
+
         function register() {
             const name = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
             const phone = document.getElementById('registerPhone').value;
             const route = document.getElementById('paymentRoute').value;
-            const password = prompt("Please set a password");
+            const password = prompt("Por favor, defina uma senha");
 
-            alert(`Registration details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nRoute: ${route}\nPassword: ${password}`);
+            alert(`Detalhes de registro:\nNome: ${name}\nEmail: ${email}\nTelefone: ${phone}\nRota: ${route}\nSenha: ${password}`);
         }
 
         function login() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
-            alert(`Login details:\nEmail: ${email}\nPassword: ${password}`);
+            // Mock login for demonstration
+            userData = {
+                name: "Usuário Exemplo",
+                amountPaid: 2000,
+                paymentDuration: 1 // duration in months
+            };
+
+            alert(`Detalhes de Login:\nEmail: ${email}\nSenha: ${password}`);
+            showDashboard();
         }
 
         function showRegister() {
@@ -70,34 +94,77 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
         }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            const dashboardHTML = `
+                <h2>Bem-vindo, ${userData.name}!</h2>
+                <p>Valor pago: R$${userData.amountPaid}</p>
+                <p>Duração do pagamento: ${userData.paymentDuration} mês(es)</p>
+                <h3>Opções de Pagamento:</h3>
+                <select id="paymentOptions" onchange="updatePayment()">
+                    <option value="1">1 mês - R$2000</option>
+                    <option value="2">2 meses - R$4000</option>
+                    <option value="3">3 meses - R$6000</option>
+                    <option value="4">4 meses - R$8000</option>
+                    <option value="5">5 meses - R$10000</option>
+                    <option value="6">6 meses - R$12000</option>
+                    <option value="7">7 meses - R$14000</option>
+                    <option value="8">8 meses - R$16000</option>
+                    <option value="9">9 meses - R$18000</option>
+                    <option value="10">10 meses - R$20000</option>
+                    <option value="11">11 meses - R$22000</option>
+                    <option value="12">12 meses - R$24000</option>
+                </select>
+                <button onclick="processPayment()">Pagar</button>
+                <button onclick="backToStart()">Sair</button>
+            `;
+            document.getElementById('dashboard').innerHTML = dashboardHTML;
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        function updatePayment() {
+            const selectedValue = document.getElementById('paymentOptions').value;
+            const amount = selectedValue * 2000;
+            alert(`Você selecionou ${selectedValue} mês(es). Total a pagar: R$${amount}`);
+        }
+
+        function processPayment() {
+            alert("Pagamento processado com sucesso!");
+        }
     </script>
 </head>
 <body>
     <div class="container" id="startScreen">
-        <h2>Welcome</h2>
-        <button onclick="showRegister()">Register</button>
-        <button onclick="showLogin()">Log In</button>
+        <h2>Bem-vindo</h2>
+        <button onclick="showRegister()">Registrar</button>
+        <button onclick="showLogin()">Entrar</button>
     </div>
 
     <div class="container hidden" id="registerScreen">
-        <h2>Register</h2>
-        <input type="text" id="registerName" placeholder="Name" required>
+        <h2>Registrar</h2>
+        <input type="text" id="registerName" placeholder="Nome" required>
         <input type="email" id="registerEmail" placeholder="Email" required>
-        <input type="text" id="registerPhone" placeholder="Phone Number" required>
+        <input type="text" id="registerPhone" placeholder="Número de Telefone" required>
         <select id="paymentRoute">
-            <option value="route1">Route 1</option>
-            <option value="route2">Route 2</option>
+            <option value="route1">Rota 1</option>
+            <option value="route2">Rota 2</option>
         </select>
-        <button onclick="register()">Register</button>
-        <button onclick="backToStart()">Back</button>
+        <button onclick="register()">Registrar</button>
+        <button onclick="backToStart()">Voltar</button>
     </div>
 
     <div class="container hidden" id="loginScreen">
-        <h2>Log In</h2>
+        <h2>Entrar</h2>
         <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button onclick="login()">Log In</button>
-        <button onclick="backToStart()">Back</button>
+        <input type="password" id="loginPassword" placeholder="Senha" required>
+        <button onclick="login()">Entrar</button>
+        <button onclick="backToStart()">Voltar</button>
+    </div>
+
+    <div class="container hidden" id="dashboard">
+        <!-- Dashboard content will be injected here -->
     </div>
 </body>
 </html>
