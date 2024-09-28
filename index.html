@@ -68,14 +68,15 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
-            // Mock login for demonstration
+            // Mock login data for demonstration
             userData = {
                 name: "Usuário Exemplo",
                 amountPaid: 2000,
-                paymentDuration: 1 // duration in months
+                paymentDuration: 1, // duration in months
+                startDate: new Date() // Assume payment started today for demo
             };
 
-            alert(`Detalhes de Login:\nEmail: ${email}\nSenha: ${password}`);
+            alert(`Login successful. Welcome, ${email}`);
             showDashboard();
         }
 
@@ -92,35 +93,35 @@
         function backToStart() {
             document.getElementById('registerScreen').classList.add('hidden');
             document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
         }
 
         function showDashboard() {
             document.getElementById('loginScreen').classList.add('hidden');
+
+            // Calculate the days left for the next payment
+            const today = new Date();
+            const paymentEndDate = new Date(userData.startDate);
+            paymentEndDate.setMonth(paymentEndDate.getMonth() + userData.paymentDuration);
+            const daysLeft = Math.ceil((paymentEndDate - today) / (1000 * 60 * 60 * 24));
+
             const dashboardHTML = `
                 <h2>Bem-vindo, ${userData.name}!</h2>
                 <p>Valor pago: R$${userData.amountPaid}</p>
                 <p>Duração do pagamento: ${userData.paymentDuration} mês(es)</p>
+                <p>Dias restantes antes do próximo pagamento: ${daysLeft} dias</p>
                 <h3>Opções de Pagamento:</h3>
                 <select id="paymentOptions" onchange="updatePayment()">
                     <option value="1">1 mês - R$2000</option>
                     <option value="2">2 meses - R$4000</option>
                     <option value="3">3 meses - R$6000</option>
-                    <option value="4">4 meses - R$8000</option>
-                    <option value="5">5 meses - R$10000</option>
-                    <option value="6">6 meses - R$12000</option>
-                    <option value="7">7 meses - R$14000</option>
-                    <option value="8">8 meses - R$16000</option>
-                    <option value="9">9 meses - R$18000</option>
-                    <option value="10">10 meses - R$20000</option>
-                    <option value="11">11 meses - R$22000</option>
-                    <option value="12">12 meses - R$24000</option>
+                    <!-- Add more options as needed -->
                 </select>
                 <button onclick="processPayment()">Pagar</button>
                 <button onclick="backToStart()">Sair</button>
             `;
             document.getElementById('dashboard').innerHTML = dashboardHTML;
-            document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
         }
 
@@ -164,7 +165,7 @@
     </div>
 
     <div class="container hidden" id="dashboard">
-        <!-- Dashboard content will be injected here -->
+        <!-- Dashboard content will be injected here dynamically -->
     </div>
 </body>
 </html>
