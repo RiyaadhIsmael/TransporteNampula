@@ -3,9 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Login and Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const route = document.getElementById('paymentRoute').value;
+            const password = prompt("Please set a password");
+
+            alert(`Registration details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nRoute: ${route}\nPassword: ${password}`);
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            alert(`Login details:\nEmail: ${email}\nPassword: ${password}`);
+        }
+
+        function showRegister() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('registerScreen').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function backToStart() {
+            document.getElementById('registerScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    </script>
 </head>
 <body>
-    <h1>Hello, World!</h1>
+    <div class="container" id="startScreen">
+        <h2>Welcome</h2>
+        <button onclick="showRegister()">Register</button>
+        <button onclick="showLogin()">Log In</button>
+    </div>
+
+    <div class="container hidden" id="registerScreen">
+        <h2>Register</h2>
+        <input type="text" id="registerName" placeholder="Name" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="text" id="registerPhone" placeholder="Phone Number" required>
+        <select id="paymentRoute">
+            <option value="route1">Route 1</option>
+            <option value="route2">Route 2</option>
+        </select>
+        <button onclick="register()">Register</button>
+        <button onclick="backToStart()">Back</button>
+    </div>
+
+    <div class="container hidden" id="loginScreen">
+        <h2>Log In</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Log In</button>
+        <button onclick="backToStart()">Back</button>
+    </div>
 </body>
 </html>
